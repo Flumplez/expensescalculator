@@ -3,6 +3,8 @@ from tkinter import ttk
 import csv
 import json
 import re 
+import matplotlib.pyplot as plt
+
 
 def totalAmount():
     total = 0
@@ -177,6 +179,22 @@ def add_category():
 
     add_category_window.destroy()
 
+def show_bar_chart():
+    categories = []
+    amounts = []
+
+    with open("data.csv", mode='r') as data:
+        dataReader = csv.DictReader(data)
+        for row in dataReader:
+            categories.append(row["Category"])
+            amounts.append(float(row["Amount"]))
+
+    plt.bar(categories, amounts)
+    plt.xlabel("Categories")
+    plt.ylabel("Amount in pounds")
+    plt.title("Expenses Bar Chart")
+    plt.show()
+
 # Load categories from JSON file
 with open('categories.json', 'r') as file:
     category_data = json.load(file)
@@ -204,6 +222,9 @@ total_label.pack(pady=(0, padding))
 
 button_show_category_popup = tk.Button(root, text="Calculate Total for Specific Category", command=show_category_popup)
 button_show_category_popup.pack(pady=(0, padding))
+
+button_show_bar_chart = tk.Button(root, text="Show Expenses Bar Chart", command=show_bar_chart)
+button_show_bar_chart.pack(pady=(0, padding))
 
 category_total_label_popup = tk.Label(root, text="")
 category_total_label_popup.pack(pady=(0, padding))
