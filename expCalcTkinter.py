@@ -4,7 +4,24 @@ import csv
 import json
 import re 
 import matplotlib.pyplot as plt
+import os
 
+def create_default_files():
+    # Check if data.csv exists
+    if not os.path.exists("data.csv"):
+        with open("data.csv", mode='w', newline='') as data:
+            data_writer = csv.writer(data)
+            data_writer.writerow(["Date", "Amount", "Category"])
+
+    # Check if categories.json exists
+    if not os.path.exists("categories.json"):
+        default_categories = {"categories": ["Rent & rates", "Light, heat, power", "House contents insurance",
+                                             "Cleaning", "Repairs", "Simon's phone", "Fuel", "Van insurance",
+                                             "Public liability", "AA Membership", "Broadband", "Mel's phone",
+                                             "Van tax", "Printer ink", "Accountant Fees"]}
+
+        with open("categories.json", mode='w') as categories:
+            json.dump(default_categories, categories)
 
 def totalAmount():
     total = 0
@@ -194,6 +211,9 @@ def show_bar_chart():
     plt.ylabel("Amount in pounds")
     plt.title("Expenses Bar Chart")
     plt.show()
+
+# Call the function to create the files if necessary
+create_default_files()
 
 # Load categories from JSON file
 with open('categories.json', 'r') as file:
